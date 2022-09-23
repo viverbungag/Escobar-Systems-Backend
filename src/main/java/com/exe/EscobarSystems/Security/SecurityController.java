@@ -16,4 +16,14 @@ public class SecurityController {
     public AccountLoginDto login(@RequestBody AccountLoginDto accountLoginDto){
         return securityService.login(accountLoginDto);
     }
+
+    @PostMapping("/employee")
+    public AccountLoginDto loginEmployee(@RequestBody AccountLoginDto accountLoginDto){
+        return securityService.loginEmployee(accountLoginDto);
+    }
+
+    @PostMapping("/admin")
+    public AccountLoginDto loginAdmin(@RequestBody AccountLoginDto accountLoginDto){
+        return securityService.loginAdmin(accountLoginDto);
+    }
 }

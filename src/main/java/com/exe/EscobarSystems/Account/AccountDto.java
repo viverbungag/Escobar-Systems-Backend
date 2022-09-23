@@ -1,15 +1,13 @@
-package com.exe.EscobarSystems.Security;
+package com.exe.EscobarSystems.Account;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class AccountLoginDto {
+public class AccountDto {
 
     private Long accountId;
     private String accountUsername;

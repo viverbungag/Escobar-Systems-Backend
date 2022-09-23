@@ -1,6 +1,8 @@
 package com.exe.EscobarSystems.Transaction;
 
 import com.exe.EscobarSystems.Employee.Employee;
+import com.exe.EscobarSystems.EmployeePosition.EmployeePosition;
+import com.exe.EscobarSystems.EmployeeType.EmployeeType;
 import com.exe.EscobarSystems.Supplier.Supplier;
 import com.exe.EscobarSystems.Supply.Supply;
 import com.exe.EscobarSystems.SupplyCategory.SupplyCategory;
@@ -35,8 +37,22 @@ public class TransactionJdbcMySqlRepository implements TransactionDao{
         Long employeeId = rs.getLong("transact_by");
         String firstName = rs.getString("employee_first_name");
         String lastName = rs.getString("employee_last_name");
+        String employeeAddress = rs.getString("employee_address");
+        String employeeContactNumber = rs.getString("employee_contact_number");
+        LocalDateTime dateEmployed = rs.getObject("date_employed", LocalDateTime.class);
+        Boolean isActive = rs.getBoolean("is_active");
 
-        return new Employee(employeeId, firstName, lastName);
+
+        return new Employee(employeeId,
+                firstName,
+                lastName,
+                employeeAddress,
+                employeeContactNumber,
+                dateEmployed,
+                new EmployeePosition(),
+                new EmployeeType(),
+                new Employee(),
+                isActive);
     }
 
     private Supplier setUpSupplier(final ResultSet rs) throws SQLException{

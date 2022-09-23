@@ -55,7 +55,7 @@ public class TransactionService {
     private TransactionDto convertEntityToDto(Transaction transaction){
         return new TransactionDto(
                 transaction.getTransactionId(),
-                String.format("%s, %s", transaction.getTransactBy().getLastName(), transaction.getTransactBy().getFirstName()),
+                String.format("%s, %s", transaction.getTransactBy().getEmployeeLastName(), transaction.getTransactBy().getEmployeeFirstName()),
                 transaction.getTransactionDate(),
                 transaction.getSupplier().getSupplierName(),
                 transaction.getSupplyQuantity(),

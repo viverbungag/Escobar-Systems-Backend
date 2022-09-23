@@ -164,8 +164,8 @@ INSERT INTO employee_attendance(attendance_time, attendance_type) VALUES ('2022-
 INSERT INTO employee_attendance(attendance_time, attendance_type) VALUES ('2022-08-10 17:00:00', 'CHECK_OUT');
 
 INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Jay", "Tan", "Davao", "0923456789", '2020-03-22', 2, 3, NULL, true);
-INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Viver", "Bungag", "Manila", "0912345678", '2020-01-10', 1, 2, 2, true);
-INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Julienne", "Panes", "Cebu", "0934567891", '2019-12-25', 3, 1, 2, true);
+INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Viver", "Bungag", "Manila", "0912345678", '2020-01-10', 1, 2, 1, true);
+INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Julienne", "Panes", "Cebu", "0934567891", '2019-12-25', 3, 1, 1, true);
 
 INSERT INTO employee_attendance_join(employee_id, employee_attendance_id) VALUES (1, 1);
 INSERT INTO employee_attendance_join(employee_id, employee_attendance_id) VALUES (1, 2);
@@ -192,8 +192,8 @@ INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_
 INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (2, '2022-09-11', 2, 5, 2, 30, '2022-10-11', 'STOCK_IN');
 INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (3, '2022-10-12', 3, 5, 3, 40, '2022-11-12', 'STOCK_IN');
 
-INSERT INTO account(account_username, account_password, employee_id) VALUES ('viver', 'password', 1);
-INSERT INTO account(account_username, account_password, employee_id) VALUES ('jay', 'password', 2);
+INSERT INTO account(account_username, account_password, employee_id) VALUES ('viver', 'password', 2);
+INSERT INTO account(account_username, account_password, employee_id) VALUES ('jay', 'password', 1);
 INSERT INTO account(account_username, account_password, employee_id) VALUES ('julienne', 'password', 3);
 
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (2, 1);
@@ -207,6 +207,3 @@ INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES 
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (1, 1);
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (2, 2);
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (3, 3);
-
-
-

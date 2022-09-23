@@ -20,7 +20,6 @@ DROP TABLE IF EXISTS supply_category CASCADE;
 DROP TABLE IF EXISTS unit_of_measurement CASCADE;
 DROP TABLE IF EXISTS menu_category CASCADE;
 DROP TABLE IF EXISTS account CASCADE;
-DROP TABLE IF EXISTS accessible_systems CASCADE;
 DROP TABLE IF EXISTS employee CASCADE;
 DROP TABLE IF EXISTS employee_income_per_month CASCADE;
 DROP TABLE IF EXISTS employee_attendance_join CASCADE;
@@ -92,24 +91,17 @@ CREATE TABLE IF NOT EXISTS employee_attendance_join(
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
-CREATE TABLE IF NOT EXISTS accessible_systems(
-    accessible_systems_id BIGINT NOT NULL AUTO_INCREMENT,
-    access_inventory_management_system BOOLEAN DEFAULT false,
-    access_employee_management_system BOOLEAN DEFAULT false,
-    access_income_and_expense_system BOOLEAN DEFAULT false,
-    access_ordering_system BOOLEAN DEFAULT false,
-    access_payroll_system BOOLEAN DEFAULT false,
-    PRIMARY KEY (accessible_systems_id)
-);
-
 CREATE TABLE IF NOT EXISTS account(
     account_id BIGINT NOT NULL AUTO_INCREMENT,
     account_username VARCHAR(255) NOT NULL,
     account_password VARCHAR(255) NOT NULL,
---    accessible_systems_id BIGINT,
+    access_inventory_management_system BOOLEAN DEFAULT false,
+    access_employee_management_system BOOLEAN DEFAULT false,
+    access_income_and_expense_system BOOLEAN DEFAULT false,
+    access_ordering_system BOOLEAN DEFAULT false,
     employee_id BIGINT,
+    is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (account_id),
---    FOREIGN KEY (accessible_systems_id) REFERENCES accessible_systems(accessible_systems_id),
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 

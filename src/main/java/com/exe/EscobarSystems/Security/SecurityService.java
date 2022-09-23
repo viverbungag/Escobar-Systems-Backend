@@ -1,6 +1,7 @@
 package com.exe.EscobarSystems.Security;
 
 
+import com.exe.EscobarSystems.Account.Account;
 import com.exe.EscobarSystems.Security.Exceptions.UserDoesNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,9 +19,15 @@ public class SecurityService {
 
     private AccountLoginDto convertEntityToDto(Account account){
         return new AccountLoginDto(
+                account.getAccountId(),
                 account.getAccountUsername(),
                 account.getAccountPassword(),
-                String.format("%s, %s",account.getEmployee().getLastName(), account.getEmployee().getFirstName())
+                String.format("%s, %s",account.getEmployee().getEmployeeLastName(), account.getEmployee().getEmployeeFirstName()),
+                account.getAccessInventoryManagementSystem(),
+                account.getAccessEmployeeManagementSystem(),
+                account.getAccessIncomeAndExpenseSystem(),
+                account.getAccessOrderingSystem(),
+                account.getIsActive()
         );
     }
 
@@ -28,6 +35,25 @@ public class SecurityService {
 
         Account account = securityRepository
                 .findUserByNameAndPassword(accountLoginDto.getAccountUsername(), accountLoginDto.getAccountPassword())
+                .orElseThrow(() -> new UserDoesNotExistException());
+
+        return convertEntityToDto(account);
+    }
+
+    public AccountLoginDto loginEmployee (AccountLoginDto accountLoginDto){
+
+        Account account = securityRepository
+                .findEmployeeUserByNameAndPassword(accountLoginDto.getAccountUsername(), accountLoginDto.getAccountPassword())
+                .orElseThrow(() -> new UserDoesNotExistException());
+
+        return convertEntityToDto(account);
+
+    }
+
+    public AccountLoginDto loginAdmin (AccountLoginDto accountLoginDto){
+
+        Account account = securityRepository
+                .findAdminUserByNameAndPassword(accountLoginDto.getAccountUsername(), accountLoginDto.getAccountPassword())
                 .orElseThrow(() -> new UserDoesNotExistException());
 
         return convertEntityToDto(account);
