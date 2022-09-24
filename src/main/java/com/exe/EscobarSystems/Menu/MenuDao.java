@@ -2,6 +2,7 @@ package com.exe.EscobarSystems.Menu;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,9 +25,13 @@ public interface MenuDao {
 
     Page<Menu> getAllActiveMenu(Pageable pageable);
 
+    List<Menu> getAllActiveMenu();
+
     Page<Menu> getAllInactiveMenu(Pageable pageable);
 
     void inactivateMenu(List<String> menuNames);
 
     void activateMenu(List<String> menuNames);
+
+    List<Menu> getMenuBasedOnCategory(String menuCategoryName);
 }

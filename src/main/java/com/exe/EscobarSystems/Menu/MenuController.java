@@ -5,6 +5,7 @@ import com.exe.EscobarSystems.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,7 +49,11 @@ public class MenuController {
     @PutMapping("/update/{id}")
     public void updateMenu(@RequestBody MenuDto menuDto,
                            @PathVariable Long id){
-        System.out.println(menuDto);
         menuService.updateMenu(menuDto, id);
+    }
+
+    @GetMapping("/unavailable")
+    public List<MenuDto> getAllUnavailableActiveMenu(){
+        return menuService.getAllUnavailableActiveMenu();
     }
 }

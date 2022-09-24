@@ -201,6 +201,7 @@ CREATE TABLE IF NOT EXISTS customer_order(
     employee_id BIGINT,
     order_time DATETIME,
     payment DECIMAL(10, 2),
+    discount DECIMAL(10, 2),
     total_cost DECIMAL(10, 2),
     PRIMARY KEY (order_id),
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -214,77 +215,4 @@ CREATE TABLE IF NOT EXISTS customer_food_order(
     FOREIGN KEY (food_order_id) REFERENCES food_order(food_order_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (order_id) REFERENCES customer_order(order_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-CREATE TABLE IF NOT EXISTS utility(
-    utility_id BIGINT NOT NULL AUTO_INCREMENT,
-    utility_name VARCHAR(255) NOT NULL,
-    utility_price DECIMAL(10, 2),
-    PRIMARY KEY (utility_id)
-);
-
-CREATE TABLE IF NOT EXISTS monthly_utility(
-    monthly_utility_id BIGINT NOT NULL AUTO_INCREMENT,
-    utility_month DATE NOT NULL,
-    utility_id BIGINT,
-    PRIMARY KEY (monthly_utility_id),
-    FOREIGN KEY (utility_id) REFERENCES utility(utility_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS monthly_transactions(
-    monthly_transaction_id BIGINT NOT NULL AUTO_INCREMENT,
-    transaction_month DATE NOT NULL,
-    transaction_id BIGINT,
-    PRIMARY KEY (monthly_transaction_id),
-    FOREIGN KEY (transaction_id) REFERENCES transaction(transaction_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS monthly_income_expenses(
-    monthly_income_expenses_id BIGINT NOT NULL AUTO_INCREMENT,
-    income_expenses_month DATE,
-    income_id BIGINT,
-    PRIMARY KEY (monthly_income_expenses_id),
-    FOREIGN KEY (income_id) REFERENCES employee_income_per_month(income_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS monthly_expenses(
-    monthly_expenses_id BIGINT NOT NULL AUTO_INCREMENT,
-    expenses_month DATE NOT NULL,
-    monthly_transactions_id BIGINT,
-    monthly_utility_id BIGINT,
-    monthly_income_expenses_id BIGINT,
-    PRIMARY KEY (monthly_expenses_id),
-    FOREIGN KEY (monthly_income_expenses_id) REFERENCES monthly_income_expenses(monthly_income_expenses_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (monthly_utility_id) REFERENCES monthly_utility(monthly_utility_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (monthly_transactions_id) REFERENCES monthly_transactions(monthly_transaction_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-
-
-CREATE TABLE IF NOT EXISTS daily_sales(
-    daily_sales_id BIGINT NOT NULL AUTO_INCREMENT,
-    sales_date DATE,
-    daily_sales_earned DECIMAL(10, 2),
-    order_id BIGINT,
-    PRIMARY KEY (daily_sales_id),
-    FOREIGN KEY (order_id) REFERENCES customer_order(order_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS monthly_sales(
-    monthly_sales_id BIGINT NOT NULL AUTO_INCREMENT,
-    sales_month DATE NOT NULL,
-    daily_sales_id BIGINT,
-    PRIMARY KEY (monthly_sales_id),
-    FOREIGN KEY (daily_sales_id) REFERENCES daily_sales(daily_sales_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS monthly_report(
-    monthly_report_id BIGINT NOT NULL AUTO_INCREMENT,
-    report_month DATE,
-    monthly_sales_id BIGINT,
-    monthly_expenses_id BIGINT,
-    PRIMARY KEY (monthly_report_id),
-    FOREIGN KEY (monthly_sales_id) REFERENCES monthly_sales(monthly_sales_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (monthly_expenses_id) REFERENCES monthly_expenses(monthly_expenses_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
 

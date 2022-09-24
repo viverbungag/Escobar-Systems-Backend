@@ -317,4 +317,19 @@ public class MenuService {
         menu.setMenuIngredients(ingredients);
         menu.setIsActive(isActive);
     }
+
+    public List<MenuDto> getAllUnavailableActiveMenu(){
+        List<MenuDto> unavailableActiveMenu = menuRepository
+                .getAllActiveMenu()
+                .stream()
+                .map((menu) -> {
+                    MenuDto menuDto = convertEntityToDto(menu);
+                    menuDto.setNumberOfServingsLeft(calculateNumberOfServingsLeft(menu));
+                    return menuDto;
+                })
+                .filter((menuDto) -> menuDto.getNumberOfServingsLeft() <= 0)
+                .collect(Collectors.toList());
+
+        return unavailableActiveMenu;
+    }
 }

@@ -200,9 +200,9 @@ INSERT INTO food_order(menu_id, menu_quantity) VALUES (2, 1);
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (3, 2);
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (4, 3);
 
-INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (1, '2022-08-10', 1100, 300);
-INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (2, '2022-09-10', 1200, 400);
-INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (3, '2022-10-10', 1300, 500);
+INSERT INTO customer_order(employee_id, order_time, payment, discount, total_cost) VALUES (1, '2022-08-10', 1100, 10, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, discount, total_cost) VALUES (2, '2022-09-10', 1200, 20, 400);
+INSERT INTO customer_order(employee_id, order_time, payment, discount, total_cost) VALUES (3, '2022-10-10', 1300, 30, 500);
 
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (1, 1);
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (2, 2);

@@ -15,6 +15,12 @@ import java.util.Optional;
 @Repository("menu_mysql")
 public interface MenuMySqlRepository extends MenuDao, JpaRepository<Menu, Long> {
 
+    @Query(value = "SELECT * FROM #{#entityName} menu " +
+            "INNER JOIN menu_category AS menu_category ON menu.menu_category_id = menu_category.menu_category_id " +
+            "WHERE menu.is_active=true AND menu_category.menu_category_name = :menuCategoryName",
+            nativeQuery = true)
+    List<Menu> getMenuBasedOnCategory(@Param("menuCategoryName") String menuCategoryName);
+
     @Query(value = "SELECT * FROM #{#entityName} menu" +
             " INNER JOIN menu_category AS menu_category ON menu.menu_category_id = menu_category.menu_category_id",
             countQuery = "SELECT COUNT(*) FROM #{#entityName}",
@@ -26,6 +32,10 @@ public interface MenuMySqlRepository extends MenuDao, JpaRepository<Menu, Long> 
             countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE is_active=true",
             nativeQuery = true)
     Page<Menu> getAllActiveMenu(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
+            nativeQuery = true)
+    List<Menu> getAllActiveMenu();
 
     @Query(value = "SELECT * FROM #{#entityName} menu" +
             " INNER JOIN menu_category AS menu_category ON menu.menu_category_id = menu_category.menu_category_id WHERE menu.is_active=false",
