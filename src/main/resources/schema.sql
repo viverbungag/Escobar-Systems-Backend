@@ -216,3 +216,19 @@ CREATE TABLE IF NOT EXISTS customer_food_order(
     FOREIGN KEY (order_id) REFERENCES customer_order(order_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS expense_category(
+    expense_category_id BIGINT NOT NULL AUTO_INCREMENT,
+    expense_category_name VARCHAR(255) NOT NULL UNIQUE,
+    is_active BOOLEAN DEFAULT true,
+    PRIMARY KEY (expense_category_id)
+);
+
+CREATE TABLE IF NOT EXISTS expense(
+    expense_id BIGINT NOT NULL AUTO_INCREMENT,
+    expense_description VARCHAR(255),
+    expense_date DATETIME,
+    expense_cost DECIMAL(10, 2),
+    expense_category_id BIGINT,
+    PRIMARY KEY (expense_id),
+    FOREIGN KEY (expense_category_id) REFERENCES expense_category(expense_category_id) ON DELETE CASCADE ON UPDATE CASCADE
+);

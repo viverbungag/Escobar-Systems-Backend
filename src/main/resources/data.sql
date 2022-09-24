@@ -188,9 +188,12 @@ INSERT INTO employee_attendance_join(employee_id, employee_attendance_id) VALUES
 INSERT INTO employee_attendance_join(employee_id, employee_attendance_id) VALUES (3, 17);
 INSERT INTO employee_attendance_join(employee_id, employee_attendance_id) VALUES (3, 18);
 
-INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (1, '2022-08-10', 1, 5, 1, 20, '2022-09-10', 'STOCK_IN');
-INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (2, '2022-09-11', 2, 5, 2, 30, '2022-10-11', 'STOCK_IN');
-INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (3, '2022-10-12', 3, 5, 3, 40, '2022-11-12', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (1, '2022-07-10', 1, 5, 1, 20, '2022-09-10', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (1, '2022-07-10', 2, 6, 2, 30, '2022-09-11', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (1, '2022-07-10', 3, 8, 3, 40, '2022-09-12', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (2, '2022-08-11', 2, 5, 2, 30, '2022-10-11', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (2, '2022-08-11', 2, 5, 2, 100, '2022-10-11', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (3, '2022-09-12', 3, 5, 3, 40, '2022-11-12', 'STOCK_IN');
 
 INSERT INTO account(account_username, account_password, employee_id) VALUES ('viver', 'password', 2);
 INSERT INTO account(account_username, account_password, employee_id) VALUES ('jay', 'password', 1);
@@ -199,11 +202,41 @@ INSERT INTO account(account_username, account_password, employee_id) VALUES ('ju
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (2, 1);
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (3, 2);
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (4, 3);
+INSERT INTO food_order(menu_id, menu_quantity) VALUES (2, 1);
+INSERT INTO food_order(menu_id, menu_quantity) VALUES (2, 2);
+INSERT INTO food_order(menu_id, menu_quantity) VALUES (3, 3);
+INSERT INTO food_order(menu_id, menu_quantity) VALUES (1, 1);
+INSERT INTO food_order(menu_id, menu_quantity) VALUES (4, 2);
+INSERT INTO food_order(menu_id, menu_quantity) VALUES (3, 3);
 
-INSERT INTO customer_order(employee_id, order_time, payment, discount, total_cost) VALUES (1, '2022-08-10', 1100, 10, 300);
-INSERT INTO customer_order(employee_id, order_time, payment, discount, total_cost) VALUES (2, '2022-09-10', 1200, 20, 400);
-INSERT INTO customer_order(employee_id, order_time, payment, discount, total_cost) VALUES (3, '2022-10-10', 1300, 30, 500);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (1, '2022-07-10', 1100, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (1, '2022-07-10', 1100, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (1, '2022-07-10', 1100, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (2, '2022-08-10', 1200, 400);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (2, '2022-08-10', 1200, 400);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (2, '2022-08-10', 1200, 400);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (3, '2022-09-10', 1300, 500);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (3, '2022-09-10', 1300, 500);
+INSERT INTO customer_order(employee_id, order_time, payment, total_cost) VALUES (3, '2022-09-10', 1300, 500);
 
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (1, 1);
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (2, 2);
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (3, 3);
+INSERT INTO customer_food_order(food_order_id, order_id) VALUES (4, 4);
+INSERT INTO customer_food_order(food_order_id, order_id) VALUES (5, 5);
+INSERT INTO customer_food_order(food_order_id, order_id) VALUES (6, 6);
+INSERT INTO customer_food_order(food_order_id, order_id) VALUES (7, 7);
+INSERT INTO customer_food_order(food_order_id, order_id) VALUES (8, 8);
+INSERT INTO customer_food_order(food_order_id, order_id) VALUES (9, 9);
+
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-07-10', 1100, '', 1);
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-07-10', 1200, '', 2);
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-07-10', 1300, '', 3);
+
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-08-10', 1400, '', 1);
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-08-10', 1500, '', 2);
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-08-10', 1300, '', 3);
+
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-09-10', 1600, '', 1);
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-09-10', 1700, '', 2);
+INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-09-10', 1300, '', 3);
