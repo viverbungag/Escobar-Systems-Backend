@@ -217,7 +217,6 @@ public class TransactionJdbcMySqlRepository implements TransactionDao{
                 "ORDER BY " + order.getProperty() + " "
                 + order.getDirection().name() + " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
 
-        System.out.println(query);
         List<Transaction> transactions = jdbcTemplate.query(query, (rs, rowNum) -> mapTransactionResult(rs));
 
 
@@ -240,4 +239,25 @@ public class TransactionJdbcMySqlRepository implements TransactionDao{
                 """;
         jdbcTemplate.update(query, transactById, transactionDate, supplierId, quantity, supplyId, pricePerUnit, expiryDate, transactionType);
     };
+
+    @Override
+    public Page<Transaction> getAllPagedExpiredTransactions(Pageable pageable){
+
+        Sort.Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Sort.Order.by("transaction_id");
+
+        String query = "SELECT * FROM transaction AS transaction " +
+                "INNER JOIN employee AS employee ON transaction.transact_by = employee.employee_id " +
+                "INNER JOIN supplier AS supplier ON transaction.supplier_id = supplier.supplier_id " +
+                "INNER JOIN supply AS supply ON transaction.supply_id = supply.supply_id " +
+                "INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id " +
+                "INNER JOIN supplier AS supplier2 ON supply.supplier_id = supplier2.supplier_id " +
+                "INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id " +
+                "WHERE expiry_date < NOW() AND transaction_type='STOCK_IN'" +
+                "ORDER BY " + order.getProperty() + " "
+                + order.getDirection().name() + " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset();
+
+        List<Transaction> transactions = jdbcTemplate.query(query, (rs, rowNum) -> mapTransactionResult(rs));
+
+        return new PageImpl<>(transactions, pageable, count());
+    }
 }

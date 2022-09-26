@@ -19,4 +19,6 @@ public interface TransactionDao {
                          Double pricePerUnit,
                          LocalDateTime expiryDate,
                          String transactionType);
+
+    Page<Transaction> getAllPagedExpiredTransactions(Pageable pageable);
 }

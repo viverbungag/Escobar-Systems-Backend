@@ -34,7 +34,10 @@ public class TransactionService {
 
     @Autowired
     @Qualifier("transaction_jdbc_mysql")
-    TransactionDao transactionRepository;
+    TransactionDao transactionJdbcRepository;
+
+    @Autowired
+    TransactionMySqlRepository transactionMySqlRepository;
 
     @Autowired
     @Qualifier("supplier_mysql")
@@ -154,7 +157,7 @@ public class TransactionService {
 
 
         Pageable pageable = initializePageable(paginationDto);
-        Page<Transaction> transactionPage = transactionRepository
+        Page<Transaction> transactionPage = transactionJdbcRepository
                 .getAllPagedTransactions(pageable, transactionFiltersPaginationDto);
 //        Page<Transaction> transactionPage = null;
 
@@ -205,7 +208,7 @@ public class TransactionService {
 
         supply.setSupplyQuantity(supply.getSupplyQuantity() + quantity);
 
-        transactionRepository.insertTransaction(
+        transactionJdbcRepository.insertTransaction(
                 transactBy.getEmployeeId(),
                 transactionDate,
                 supplier.getSupplierId(),
@@ -248,13 +251,72 @@ public class TransactionService {
 
         Double newQuantity = supply.getSupplyQuantity() - quantity;
 
+        System.out.println(newQuantity);
+
         if (newQuantity < 0){
             throw new SupplyQuantityIsLessThanZeroException();
         }
 
         supply.setSupplyQuantity(newQuantity);
 
-        transactionRepository.insertTransaction(
+        transactionJdbcRepository.insertTransaction(
+                transactBy.getEmployeeId(),
+                transactionDate,
+                supplier.getSupplierId(),
+                quantity,
+                supply.getSupplyId(),
+                pricePerUnit,
+                expiryDate,
+                transactionType.toString());
+
+    }
+
+    public void stockOutExpiredTransaction(TransactionDto transactionDto){
+        Long transactionId = transactionDto.getTransactionId();
+        String[] transactionSplit  = transactionDto.getTransactByName().split(", ");
+        String transactByLastName = transactionSplit[0];
+        String transactByFirstName = transactionSplit[1];
+        LocalDateTime transactionDate = transactionDto.getTransactionDate();
+        Double quantity = transactionDto.getSupplyQuantity();
+        Double pricePerUnit = transactionDto.getPricePerUnit();
+        LocalDateTime expiryDate = transactionDto.getExpiryDate();
+        TransactionType transactionType = transactionDto.getTransactionType();
+
+        Transaction transaction = transactionMySqlRepository
+                .findTransactionById(transactionId)
+                .orElseThrow(() -> new TransactionNotFoundException(transactionId));
+
+        Employee transactBy = employeeRepository
+                .getEmployeeByFirstAndLastName(transactByFirstName, transactByLastName)
+                .orElseThrow(() -> new EmployeeNotFoundException(transactByFirstName, transactByLastName));
+
+        Supplier supplier = supplierRepository
+                .getSupplierByName(transactionDto.getSupplierName())
+                .orElseThrow(()-> new SupplierNotFoundException(transactionDto.getSupplierName()));
+
+        Supply supply = supplyRepository
+                .getSupplyByName(transactionDto.getSupplyName())
+                .orElseThrow(() -> new SupplyNotFoundException(transactionDto.getSupplyName()));
+
+        if (quantity == null){
+            throw new QuantityIsNullException();
+        }
+
+        if (quantity < 1){
+            throw new QuantityIsLessThanOneException();
+        }
+
+        Double newQuantity = supply.getSupplyQuantity() - quantity;
+        Double newTransactionQuantity = transaction.getSupplyQuantity() - quantity;
+
+        if (newQuantity < 0){
+            throw new SupplyQuantityIsLessThanZeroException();
+        }
+
+        transaction.setSupplyQuantity(newTransactionQuantity);
+        supply.setSupplyQuantity(newQuantity);
+
+        transactionJdbcRepository.insertTransaction(
                 transactBy.getEmployeeId(),
                 transactionDate,
                 supplier.getSupplierId(),
@@ -271,4 +333,13 @@ public class TransactionService {
         printTransactionReport.print(transactionPrintDetailsDto.getTransactions(), transactionPrintDetailsDto.getAccountFullName());
     }
 
+    public Map<String, Object> getExpiredTransaction(PaginationDto paginationDto) {
+
+
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Transaction> transactionPage = transactionJdbcRepository
+                .getAllPagedExpiredTransactions(pageable);
+
+        return initializeTransactionWithPageDetails(transactionPage, paginationDto);
+    }
 }
