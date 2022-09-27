@@ -28,6 +28,7 @@ DROP TABLE IF EXISTS employee_position CASCADE;
 DROP TABLE IF EXISTS employee_type CASCADE;
 DROP TABLE IF EXISTS expense_category CASCADE;
 DROP TABLE IF EXISTS expense CASCADE;
+DROP TABLE IF EXISTS transaction_dedicated_to_expired CASCADE;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -155,6 +156,22 @@ CREATE TABLE IF NOT EXISTS supply(
 );
 
 CREATE TABLE IF NOT EXISTS transaction(
+    transaction_id BIGINT NOT NULL AUTO_INCREMENT,
+    transact_by BIGINT,
+    transaction_date DATETIME,
+    supplier_id BIGINT,
+    transaction_supply_quantity DECIMAL(10, 5),
+    supply_id BIGINT,
+    price_per_unit DECIMAL(10, 5),
+    expiry_date DATETIME,
+    transaction_type VARCHAR(255),
+    PRIMARY KEY (transaction_id),
+    FOREIGN KEY (supply_id) REFERENCES supply(supply_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (transact_by) REFERENCES employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS transaction_dedicated_to_expired(
     transaction_id BIGINT NOT NULL AUTO_INCREMENT,
     transact_by BIGINT,
     transaction_date DATETIME,

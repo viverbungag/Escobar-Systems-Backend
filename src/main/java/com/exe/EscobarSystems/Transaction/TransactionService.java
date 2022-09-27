@@ -282,7 +282,7 @@ public class TransactionService {
         LocalDateTime expiryDate = transactionDto.getExpiryDate();
         TransactionType transactionType = transactionDto.getTransactionType();
 
-        Transaction transaction = transactionMySqlRepository
+        TransactionDedicatedToExpired transaction = transactionMySqlRepository
                 .findTransactionById(transactionId)
                 .orElseThrow(() -> new TransactionNotFoundException(transactionId));
 
@@ -313,7 +313,12 @@ public class TransactionService {
             throw new SupplyQuantityIsLessThanZeroException();
         }
 
-        transaction.setSupplyQuantity(newTransactionQuantity);
+        if (newTransactionQuantity <= 0){
+            transactionMySqlRepository.deleteTransactionById(transactionId);
+        }else{
+            transaction.setSupplyQuantity(newTransactionQuantity);
+        }
+
         supply.setSupplyQuantity(newQuantity);
 
         transactionJdbcRepository.insertTransaction(

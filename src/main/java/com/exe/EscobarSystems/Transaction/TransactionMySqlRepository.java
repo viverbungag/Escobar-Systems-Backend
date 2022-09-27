@@ -11,10 +11,16 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository("transaction_mysql")
-public interface TransactionMySqlRepository extends JpaRepository<Transaction, Long> {
+public interface TransactionMySqlRepository extends JpaRepository<TransactionDedicatedToExpired, Long> {
 
-    @Query(value = "SELECT * FROM #{#entityName} " +
+    @Query(value = "SELECT * FROM transaction_dedicated_to_expired " +
             "WHERE transaction_id = :transactionId",
             nativeQuery = true)
-    Optional<Transaction> findTransactionById(@Param("transactionId") Long transactionId);
+    Optional<TransactionDedicatedToExpired> findTransactionById(@Param("transactionId") Long transactionId);
+
+    @Query(value = "DELETE FROM transaction_dedicated_to_expired " +
+            "WHERE transaction_id = :transactionId",
+            nativeQuery = true)
+    @Modifying
+    void deleteTransactionById(@Param("transactionId") Long transactionId);
 }

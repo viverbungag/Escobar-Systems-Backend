@@ -233,10 +233,19 @@ public class TransactionJdbcMySqlRepository implements TransactionDao{
                            LocalDateTime expiryDate,
                            String transactionType){
 
+        if (transactionType == "STOCK_IN"){
+            String query = """
+                INSERT INTO transaction_dedicated_to_expired(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """;
+            jdbcTemplate.update(query, transactById, transactionDate, supplierId, quantity, supplyId, pricePerUnit, expiryDate, transactionType);
+        }
+
         String query = """
                 INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
+
         jdbcTemplate.update(query, transactById, transactionDate, supplierId, quantity, supplyId, pricePerUnit, expiryDate, transactionType);
     };
 
@@ -245,7 +254,7 @@ public class TransactionJdbcMySqlRepository implements TransactionDao{
 
         Sort.Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Sort.Order.by("transaction_id");
 
-        String query = "SELECT * FROM transaction AS transaction " +
+        String query = "SELECT * FROM transaction_dedicated_to_expired AS transaction " +
                 "INNER JOIN employee AS employee ON transaction.transact_by = employee.employee_id " +
                 "INNER JOIN supplier AS supplier ON transaction.supplier_id = supplier.supplier_id " +
                 "INNER JOIN supply AS supply ON transaction.supply_id = supply.supply_id " +
