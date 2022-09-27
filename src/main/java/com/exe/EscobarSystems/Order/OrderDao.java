@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,5 +24,7 @@ public interface OrderDao {
     void removeOrder(Long orderId);
 
     Optional<Order> getOrderByOrderId(Long orderId);
+
+    List<Order> getAllOrdersToday();
 
 }

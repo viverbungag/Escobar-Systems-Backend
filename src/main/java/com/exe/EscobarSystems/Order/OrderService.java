@@ -342,4 +342,60 @@ public class OrderService {
 
         orderRepository.removeOrder(orderId);
     }
+
+    List<OrderDto> getAllOrdersToday(){
+        return orderRepository
+                .getAllOrdersToday()
+                .stream()
+                .map((Order order) -> convertEntityToDto(order))
+                .collect(Collectors.toList());
+    }
+
+    public void addToExistingOrder(OrderDto orderDto, Long orderId) {
+        List<CustomerFoodOrderDto> customerFoodOrders = orderDto.getCustomerFoodOrders();
+
+        customerFoodOrders
+                .stream()
+                .forEach((customerFoodOrder) -> {
+                    String menuName = customerFoodOrder.getFoodOrder().getMenu().getMenuName();
+                    Integer menuQuantity = customerFoodOrder.getFoodOrder().getMenuQuantity();
+
+                    Menu menu = menuRepository
+                            .getMenuByName(menuName)
+                            .orElseThrow(() -> new MenuNotFoundException(menuName));
+
+                    Long foodOrderId = foodOrderJdbcRepository.insertFoodOrder(menu.getMenuId(), menuQuantity);
+
+                    orderRepository.insertCustomerFoodOrder(foodOrderId, orderId);
+
+                    menu.getMenuIngredients()
+                            .stream()
+                            .forEach((ingredient) -> {
+                                Supply ingredientSupply = ingredient.getSupply();
+
+                                Supply supply = supplyRepository
+                                        .getSupplyByName(ingredientSupply.getSupplyName())
+                                        .orElseThrow(() -> new SupplyNotFoundException(ingredientSupply.getSupplyName()));
+
+                                Double newQuantity = supply.getSupplyQuantity() - (ingredient.getQuantity() * menuQuantity);
+
+                                supply.setSupplyQuantity(newQuantity);
+                            });
+                });
+    }
+
+    public List<MenuDto> getAllMenus(MenuOnCategoryDto menuOnCategoryDto) {
+        List<OrderMenuDto> orderMenuOnCart = menuOnCategoryDto.getOrderMenu();
+
+        List<MenuDto> menus = menuRepository
+                .getAllActiveMenu()
+                .stream()
+                .map((Menu menu)-> {
+                    menu.setNumberOfServingsLeft(calculateNumberOfServingsLeft(menu, orderMenuOnCart));
+                    return convertEntityToDto(menu);
+                })
+                .collect(Collectors.toList());
+
+        return menus;
+    }
 }

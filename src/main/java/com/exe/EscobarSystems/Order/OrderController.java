@@ -22,15 +22,30 @@ public class OrderController {
         return orderService.getAllPagedOrders(paginationDto);
     }
 
+    @GetMapping("/today")
+    public List<OrderDto> getAllOrdersToday(){
+        return orderService.getAllOrdersToday();
+    }
+
     @PostMapping("/menu-on-category")
     public List<MenuDto> getMenuBasedOnCategory(@RequestBody MenuOnCategoryDto menuOnCategoryDto){
         System.out.println(menuOnCategoryDto);
         return orderService.getMenuBasedOnCategory(menuOnCategoryDto);
     }
 
+    @PostMapping("/menu")
+    public List<MenuDto> getAllMenu(@RequestBody MenuOnCategoryDto menuOnCategoryDto){
+        return orderService.getAllMenus(menuOnCategoryDto);
+    }
+
     @PostMapping("/add")
     public void addOrder (@RequestBody OrderDto orderDto){
        orderService.addOrder(orderDto);
+    }
+
+    @PostMapping("/add/existing/{orderId}")
+    public void addToExistingOrder (@RequestBody OrderDto orderDto, @PathVariable Long orderId){
+        orderService.addToExistingOrder(orderDto, orderId);
     }
 
     @DeleteMapping("/void/{orderId}")

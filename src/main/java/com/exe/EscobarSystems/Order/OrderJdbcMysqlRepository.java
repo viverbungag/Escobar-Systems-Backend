@@ -63,4 +63,9 @@ public class OrderJdbcMysqlRepository implements OrderDao{
     public Optional<Order> getOrderByOrderId(Long orderId){
         return null;
     }
+
+    public List<Order> getAllOrdersToday(){
+        return null;
+    };
+
 }

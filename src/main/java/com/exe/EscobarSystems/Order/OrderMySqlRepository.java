@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository("order_mysql")
@@ -50,5 +51,9 @@ public interface OrderMySqlRepository extends  OrderDao, JpaRepository<Order, Lo
     @Query(value = "SELECT * FROM #{#entityName} WHERE order_id = :orderId",
             nativeQuery = true)
     Optional<Order> getOrderByOrderId(@Param("orderId")Long orderId);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE DATE_SUB(NOW(), INTERVAL 8 HOUR) < order_time",
+            nativeQuery = true)
+    List<Order> getAllOrdersToday();
 
 }

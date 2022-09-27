@@ -100,7 +100,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
                 		FROM customer_food_order
                 		INNER JOIN customer_order ON customer_food_order.order_id = customer_order.order_id
                 		WHERE order_time BETWEEN ? AND ?
-                		GROUP BY order_time) AS income ON expense_date = income_date
+                		GROUP BY income_date) AS income ON expense_date = income_date
                 GROUP BY expense_date;
                 """;
 
@@ -145,7 +145,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
                 SELECT DATE_FORMAT(order_time, '%M %d, %Y') AS income_date, SUM(total_cost) AS daily_income
                 FROM customer_food_order
                     INNER JOIN customer_order ON customer_food_order.order_id = customer_order.order_id
-                GROUP BY order_time;
+                GROUP BY income_date;
                 """;
 
         List<IncomeDto> income = jdbcTemplate.query(query, (rs, rowNum) -> mapIncomeResult(rs));
