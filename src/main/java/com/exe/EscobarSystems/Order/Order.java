@@ -50,4 +50,22 @@ public class Order {
     @NonNull
     @Column(name = "total_cost")
     private BigDecimal totalCost;
+
+    @NonNull
+    @Column(name = "additional_payment")
+    BigDecimal additionalPayment;
+    
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status")
+    PaymentStatus paymentStatus;
+    
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "serving_type")
+    ServingType servingType;
+
+    @NonNull
+    @Column(name = "table_number")
+    Integer tableNumber;
 }

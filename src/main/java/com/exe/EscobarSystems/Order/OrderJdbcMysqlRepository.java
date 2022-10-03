@@ -3,6 +3,7 @@ package com.exe.EscobarSystems.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -34,12 +35,20 @@ public class OrderJdbcMysqlRepository implements OrderDao{
     }
 
     @Override
-    public Long insertOrder(Long employeeId, LocalDateTime orderTime, BigDecimal payment, BigDecimal totalCost, BigDecimal discount){
+    public Long insertOrder(Long employeeId,
+                            LocalDateTime orderTime,
+                            BigDecimal payment,
+                            BigDecimal totalCost,
+                            BigDecimal discount,
+                            BigDecimal additionalPayment,
+                            PaymentStatus paymentStatus,
+                            ServingType servingType,
+                            Integer tableNumber){
         String query = """
-                INSERT INTO customer_order(employee_id, order_time, payment, total_cost, discount)
-                VALUES (?, ?, ?, ?, ?);
+                INSERT INTO customer_order(employee_id, order_time, payment, total_cost, discount, payment_status, serving,type, table_number, additional_payment)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """;
-        jdbcTemplate.update(query, employeeId, orderTime, payment, totalCost, discount);
+        jdbcTemplate.update(query, employeeId, orderTime, payment, totalCost, discount, paymentStatus, servingType, tableNumber, additionalPayment);
 
         String queryForGettingId = "SELECT LAST_INSERT_ID();";
 
@@ -65,6 +74,19 @@ public class OrderJdbcMysqlRepository implements OrderDao{
     }
 
     public List<Order> getAllOrdersToday(){
+        return null;
+    };
+
+
+    public Page<Order> getAllPagedPaidOrders(Pageable pageable){
+        return null;
+    }
+
+    public Page<Order> getAllPagedUnpaidOrders(Pageable pageable){
+        return null;
+    };
+
+    public List<Order> getAllUnpaidOrders(){
         return null;
     };
 

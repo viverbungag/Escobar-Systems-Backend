@@ -35,3 +35,10 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar {
+	archivesBaseName = 'escobar-systems'
+	archiveVersion = '0.0.1-SNAPSHOT'
+}
+
+project.buildDir = 'C:\\JarPaths\\escobar-systems'

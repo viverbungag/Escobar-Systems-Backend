@@ -222,6 +222,10 @@ CREATE TABLE IF NOT EXISTS customer_order(
     payment DECIMAL(10, 2),
     discount DECIMAL(10, 2),
     total_cost DECIMAL(10, 2),
+    payment_status VARCHAR(255),
+    serving_type VARCHAR(255),
+    table_number INTEGER,
+    additional_payment DECIMAL(10, 2) DEFAULT 0,
     PRIMARY KEY (order_id),
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
