@@ -27,8 +27,8 @@ public interface OrderDao {
                      BigDecimal totalCost,
                      BigDecimal discount,
                      BigDecimal additionalPayment,
-                     PaymentStatus paymentStatus,
-                     ServingType servingType,
+                     String paymentStatus,
+                     String servingType,
                      Integer tableNumber);
 
     void insertCustomerFoodOrder(Long foodOrderId, Long orderId);

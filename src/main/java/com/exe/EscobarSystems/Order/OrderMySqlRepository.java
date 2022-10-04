@@ -31,8 +31,8 @@ public interface OrderMySqlRepository extends  OrderDao, JpaRepository<Order, Lo
             nativeQuery = true)
     Page<Order> getAllPagedUnpaidOrders(Pageable pageable);
 
-    @Query(value = "INSERT INTO #{#entityName}(employee_id, order_time, payment, total_cost, discount) " +
-            "VALUES (:employeeId, :orderTime, :payment, :totalCost, :discount);",
+    @Query(value = "INSERT INTO #{#entityName}(employee_id, order_time, payment, total_cost, discount, additional_payment, payment_status, serving_type, table_number) " +
+            "VALUES (:employeeId, :orderTime, :payment, :totalCost, :discount, :additionalPayment, :paymentStatus, :servingType, :tableNumber);",
             nativeQuery = true)
     @Modifying
     Long insertOrder(@Param("employeeId")Long employeeId,
@@ -41,8 +41,8 @@ public interface OrderMySqlRepository extends  OrderDao, JpaRepository<Order, Lo
                      @Param("totalCost")BigDecimal totalCost,
                      @Param("discount")BigDecimal discount,
                      @Param("additionalPayment")BigDecimal additionalPayment,
-                     @Param("paymentStatus")PaymentStatus paymentStatus,
-                     @Param("servingType")ServingType servingType,
+                     @Param("paymentStatus")String paymentStatus,
+                     @Param("servingType")String servingType,
                      @Param("tableNumber")Integer tableNumber);
 
     @Query(value = "DELETE FROM #{#entityName} " +
