@@ -39,6 +39,10 @@ public class ExpenseController {
         return expenseService.getLineGraphDataByMonth(fromToDate);
     }
 
+    @PostMapping("/table-graph")
+    public List<IncomeTablesBarGraphDto> getIncomeTablesBarGraphByMonth(@RequestBody FromToDate fromToDate){
+        return expenseService.getIncomeTablesBarGraphByMonth(fromToDate);
+    }
     @PostMapping("/add")
     public void addExpense(@RequestBody ExpenseDto expenseDto){
         expenseService.addExpense(expenseDto);

@@ -65,6 +65,9 @@ public class ExpenseService {
         return expenseDonutGraphDtoList;
     }
 
+    public List<IncomeTablesBarGraphDto> getIncomeTablesBarGraphByMonth(FromToDate fromToDate){
+        return expenseJdbcRepository.getIncomeTablesBarGraphByMonth(fromToDate);
+    }
     public List<IncomeLineGraphDto> getLineGraphDataByMonth(FromToDate fromToDate){
         return expenseJdbcRepository.getIncomeLineGraphByMonth(fromToDate);
     }

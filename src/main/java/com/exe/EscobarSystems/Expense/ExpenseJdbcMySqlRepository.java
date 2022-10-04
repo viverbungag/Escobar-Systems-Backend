@@ -131,10 +131,34 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         jdbcTemplate.update(query, expenseId);
     }
 
+    private IncomeTablesBarGraphDto mapIncomeTablesBarGraphDto(final ResultSet rs) throws SQLException {
+        IncomeTablesBarGraphDto incomeTablesBarGraphDto = new IncomeTablesBarGraphDto();
+        incomeTablesBarGraphDto.setTableNumber((rs.getString("table_number")));
+        incomeTablesBarGraphDto.setTotalCount((rs.getInt("table_count")));
+
+        return incomeTablesBarGraphDto;
+    }
+
+    public List<IncomeTablesBarGraphDto> getIncomeTablesBarGraphByMonth(FromToDate fromToDate){
+        LocalDateTime fromDate = fromToDate.getFromDate();
+        LocalDateTime toDate = fromToDate.getToDate();
+
+        String query = """
+                SELECT CONCAT('Table ', table_number) AS table_number, COUNT(table_number) AS table_count
+                FROM customer_order
+                WHERE payment_status='PAID' AND order_time BETWEEN ? AND ? 
+                GROUP BY table_number
+                """;
+
+        List<IncomeTablesBarGraphDto> incomeTablesBarGraph = jdbcTemplate.query(query, (rs, rowNum) -> mapIncomeTablesBarGraphDto(rs), fromDate, toDate);
+
+        return incomeTablesBarGraph;
+    }
     private IncomeLineGraphDto mapIncomeLineGraphDateResult(final ResultSet rs) throws SQLException {
         IncomeLineGraphDto incomeLineGraphDto = new IncomeLineGraphDto();
         incomeLineGraphDto.setIncomeHour(rs.getString("income_hour"));
         incomeLineGraphDto.setHourlyIncome(rs.getDouble("hourly_income"));
+        incomeLineGraphDto.setHourlyOrders(rs.getInt("hourly_orders"));
         return incomeLineGraphDto;
     }
 
@@ -143,7 +167,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         LocalDateTime toDate = fromToDate.getToDate();
 
         String query = """
-                SELECT SUM(total_cost) AS hourly_income, DATE_FORMAT(order_time, '%h:00 %p' ) AS income_hour
+                SELECT SUM(total_cost) AS hourly_income, DATE_FORMAT(order_time, '%h:00 %p' ) AS income_hour, COUNT(order_id) AS hourly_orders
                 FROM customer_order
                 WHERE order_time BETWEEN ? AND ?
                 GROUP BY HOUR(order_time);

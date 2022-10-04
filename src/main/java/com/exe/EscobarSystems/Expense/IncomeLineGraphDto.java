@@ -1,8 +1,6 @@
 package com.exe.EscobarSystems.Expense;
 
 import lombok.*;
-
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -11,4 +9,5 @@ import lombok.*;
 public class IncomeLineGraphDto {
     private String incomeHour;
     private Double hourlyIncome;
+    private Integer hourlyOrders;
 }
