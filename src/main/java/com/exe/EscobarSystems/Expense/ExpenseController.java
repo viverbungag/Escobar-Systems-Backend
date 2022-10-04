@@ -34,6 +34,11 @@ public class ExpenseController {
         return expenseService.getDonutGraphDataByMonth(fromToDate);
     }
 
+    @PostMapping("/line-graph")
+    public List<IncomeLineGraphDto> getLineGraphDataByMonth(@RequestBody FromToDate fromToDate){
+        return expenseService.getLineGraphDataByMonth(fromToDate);
+    }
+
     @PostMapping("/add")
     public void addExpense(@RequestBody ExpenseDto expenseDto){
         expenseService.addExpense(expenseDto);

@@ -65,6 +65,10 @@ public class ExpenseService {
         return expenseDonutGraphDtoList;
     }
 
+    public List<IncomeLineGraphDto> getLineGraphDataByMonth(FromToDate fromToDate){
+        return expenseJdbcRepository.getIncomeLineGraphByMonth(fromToDate);
+    }
+
     public void addExpense(ExpenseDto expenseDto){
 
         String expenseDescription = expenseDto.getExpenseDescription();

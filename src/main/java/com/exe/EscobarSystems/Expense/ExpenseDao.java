@@ -19,6 +19,8 @@ public interface ExpenseDao {
 
     void deleteExpense(Long expenseId);
 
+    List<IncomeLineGraphDto> getIncomeLineGraphByMonth(FromToDate fromToDate);
+
     List<IncomeDto> getAllIncomeByMonth();
 
 }

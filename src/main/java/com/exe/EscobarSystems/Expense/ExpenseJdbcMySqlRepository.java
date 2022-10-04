@@ -131,6 +131,29 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         jdbcTemplate.update(query, expenseId);
     }
 
+    private IncomeLineGraphDto mapIncomeLineGraphDateResult(final ResultSet rs) throws SQLException {
+        IncomeLineGraphDto incomeLineGraphDto = new IncomeLineGraphDto();
+        incomeLineGraphDto.setIncomeHour(rs.getString("income_hour"));
+        incomeLineGraphDto.setHourlyIncome(rs.getDouble("hourly_income"));
+        return incomeLineGraphDto;
+    }
+
+    public List<IncomeLineGraphDto> getIncomeLineGraphByMonth(FromToDate fromToDate){
+        LocalDateTime fromDate = fromToDate.getFromDate();
+        LocalDateTime toDate = fromToDate.getToDate();
+
+        String query = """
+                SELECT SUM(total_cost) AS hourly_income, DATE_FORMAT(order_time, '%h:00 %p' ) AS income_hour
+                FROM customer_order
+                WHERE order_time BETWEEN ? AND ?
+                GROUP BY HOUR(order_time);
+                """;
+
+        List<IncomeLineGraphDto> incomeLineGraphData = jdbcTemplate.query(query, (rs, rowNum) -> mapIncomeLineGraphDateResult(rs), fromDate, toDate);
+
+        return incomeLineGraphData;
+    }
+
     private IncomeDto mapIncomeResult(final ResultSet rs) throws SQLException {
         IncomeDto incomeDto = new IncomeDto();
         incomeDto.setIncomeDate(rs.getString("income_date"));
