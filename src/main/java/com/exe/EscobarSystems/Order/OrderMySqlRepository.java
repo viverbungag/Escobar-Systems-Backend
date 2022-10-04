@@ -21,6 +21,16 @@ public interface OrderMySqlRepository extends  OrderDao, JpaRepository<Order, Lo
             nativeQuery = true)
     Page<Order> getAllPagedOrders(Pageable pageable);
 
+    @Query(value = "SELECT * FROM #{#entityName} WHERE payment_status = 'PAID'",
+            countQuery = "SELECT * FROM #{#entityName} WHERE payment_status = 'PAID'",
+            nativeQuery = true)
+    Page<Order> getAllPagedPaidOrders(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE payment_status = 'UNPAID'",
+            countQuery = "SELECT * FROM #{#entityName} WHERE payment_status = 'UNPAID'",
+            nativeQuery = true)
+    Page<Order> getAllPagedUnpaidOrders(Pageable pageable);
+
     @Query(value = "INSERT INTO #{#entityName}(employee_id, order_time, payment, total_cost, discount) " +
             "VALUES (:employeeId, :orderTime, :payment, :totalCost, :discount);",
             nativeQuery = true)
@@ -29,7 +39,11 @@ public interface OrderMySqlRepository extends  OrderDao, JpaRepository<Order, Lo
                      @Param("orderTime")LocalDateTime orderTime,
                      @Param("payment")BigDecimal payment,
                      @Param("totalCost")BigDecimal totalCost,
-                     @Param("discount")BigDecimal discount);
+                     @Param("discount")BigDecimal discount,
+                     @Param("additionalPayment")BigDecimal additionalPayment,
+                     @Param("paymentStatus")PaymentStatus paymentStatus,
+                     @Param("servingType")ServingType servingType,
+                     @Param("tableNumber")Integer tableNumber);
 
     @Query(value = "DELETE FROM #{#entityName} " +
             "WHERE order_id = :orderId",
@@ -55,5 +69,9 @@ public interface OrderMySqlRepository extends  OrderDao, JpaRepository<Order, Lo
     @Query(value = "SELECT * FROM #{#entityName} WHERE DATE_SUB(NOW(), INTERVAL 8 HOUR) < order_time",
             nativeQuery = true)
     List<Order> getAllOrdersToday();
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE payment_status = 'UNPAID'",
+            nativeQuery = true)
+    List<Order> getAllUnpaidOrders();
 
 }

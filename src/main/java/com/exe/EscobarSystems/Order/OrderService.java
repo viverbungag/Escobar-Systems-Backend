@@ -91,7 +91,11 @@ public class OrderService {
                         .collect(Collectors.toList()),
                 order.getPayment(),
                 order.getDiscount(),
-                order.getTotalCost()
+                order.getTotalCost(),
+                order.getAdditionalPayment(),
+                order.getPaymentStatus(),
+                order.getServingType(),
+                order.getTableNumber()
         );
     }
 
@@ -239,16 +243,10 @@ public class OrderService {
         String employeeLastName = employeeNameSplit[0];
         String employeeFirstName = employeeNameSplit[1];
         LocalDateTime orderTime = orderDto.getOrderTime();
-        BigDecimal payment = orderDto.getPayment();
-        BigDecimal totalCost = orderDto.getTotalCost();
-        BigDecimal discount = orderDto.getDiscount();
+        PaymentStatus paymentStatus = orderDto.getPaymentStatus();
+        ServingType servingType = orderDto.getServingType();
+        Integer tableNumber = orderDto.getTableNumber();
         List<CustomerFoodOrderDto> customerFoodOrders = orderDto.getCustomerFoodOrders();
-
-        if (discount == null ||
-                discount.compareTo(new BigDecimal(0)) < 0 ||
-                discount.compareTo(new BigDecimal(100)) > 0){
-            throw new OrderDiscountOutOfRangeException();
-        }
 
         Employee employee = employeeRepository
                 .getEmployeeByFirstAndLastName(employeeFirstName, employeeLastName)
@@ -257,9 +255,13 @@ public class OrderService {
         Long orderId = orderJdbcRepository.insertOrder(
                 employee.getEmployeeId(),
                 orderTime,
-                payment,
-                totalCost,
-                discount);
+                new BigDecimal(0),
+                new BigDecimal(0),
+                new BigDecimal(0),
+                new BigDecimal(0),
+                paymentStatus,
+                servingType,
+                tableNumber);
 
 
         customerFoodOrders
@@ -407,5 +409,51 @@ public class OrderService {
                 .collect(Collectors.toList());
 
         return menus;
+    }
+
+    public Map<String, Object> getAllPagedPaidOrders(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Order> orderPage = orderRepository
+                .getAllPagedPaidOrders(pageable);
+
+        return initializeOrderWithPageDetails(orderPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllPagedUnpaidOrders(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Order> orderPage = orderRepository
+                .getAllPagedUnpaidOrders(pageable);
+
+        return initializeOrderWithPageDetails(orderPage, paginationDto);
+    }
+
+    public void payOrder(OrderDto orderDto, Long orderId) {
+        Order order = orderRepository.getOrderByOrderId(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+
+        BigDecimal payment = orderDto.getPayment();
+        BigDecimal discount = orderDto.getDiscount();
+        BigDecimal totalCost = orderDto.getTotalCost();
+        BigDecimal additionalPayment = orderDto.getAdditionalPayment();
+
+        if (discount == null ||
+                discount.compareTo(new BigDecimal(0)) < 0 ||
+                discount.compareTo(new BigDecimal(100)) > 0){
+            throw new OrderDiscountOutOfRangeException();
+        }
+
+        order.setPayment(payment);
+        order.setDiscount(discount);
+        order.setTotalCost(totalCost);
+        order.setAdditionalPayment(additionalPayment);
+
+    }
+
+    public List<Integer> getUnavailableTableNumbers() {
+        return orderRepository
+                .getAllUnpaidOrders()
+                .stream()
+                .map((order) -> order.getTableNumber())
+                .collect(Collectors.toList());
     }
 }

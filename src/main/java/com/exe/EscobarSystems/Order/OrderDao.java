@@ -15,7 +15,21 @@ public interface OrderDao {
 
     Page<Order> getAllPagedOrders(Pageable pageable);
 
-    Long insertOrder(Long employeeId, LocalDateTime orderTime, BigDecimal payment, BigDecimal totalCost, BigDecimal discount);
+    Page<Order> getAllPagedPaidOrders(Pageable pageable);
+
+    Page<Order> getAllPagedUnpaidOrders(Pageable pageable);
+
+    List<Order> getAllUnpaidOrders();
+
+    Long insertOrder(Long employeeId,
+                     LocalDateTime orderTime,
+                     BigDecimal payment,
+                     BigDecimal totalCost,
+                     BigDecimal discount,
+                     BigDecimal additionalPayment,
+                     PaymentStatus paymentStatus,
+                     ServingType servingType,
+                     Integer tableNumber);
 
     void insertCustomerFoodOrder(Long foodOrderId, Long orderId);
 

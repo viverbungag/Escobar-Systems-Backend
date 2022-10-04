@@ -22,6 +22,16 @@ public class OrderController {
         return orderService.getAllPagedOrders(paginationDto);
     }
 
+    @PostMapping("/paged/paid")
+    public Map<String, Object> getAllPagedPaidOrders(@RequestBody PaginationDto paginationDto){
+        return orderService.getAllPagedPaidOrders(paginationDto);
+    }
+
+    @PostMapping("/paged/unpaid")
+    public Map<String, Object> getAllPagedUnpaidOrders(@RequestBody PaginationDto paginationDto){
+        return orderService.getAllPagedUnpaidOrders(paginationDto);
+    }
+
     @GetMapping("/today")
     public List<OrderDto> getAllOrdersToday(){
         return orderService.getAllOrdersToday();
@@ -42,6 +52,16 @@ public class OrderController {
     public void addOrder (@RequestBody OrderDto orderDto){
        orderService.addOrder(orderDto);
     }
+
+    @PostMapping("/pay/{orderId}")
+    public void payOrder (@RequestBody OrderDto orderDto, @PathVariable Long orderId){
+        orderService.payOrder(orderDto, orderId);
+    }
+
+    @GetMapping("/unavailable-table-numbers")
+    public List<Integer> getUnavailableTableNumbers(){
+        return orderService.getUnavailableTableNumbers();
+    };
 
     @PostMapping("/add/existing/{orderId}")
     public void addToExistingOrder (@RequestBody OrderDto orderDto, @PathVariable Long orderId){
