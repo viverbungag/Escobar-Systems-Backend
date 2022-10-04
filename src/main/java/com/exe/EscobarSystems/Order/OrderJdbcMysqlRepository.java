@@ -45,7 +45,7 @@ public class OrderJdbcMysqlRepository implements OrderDao{
                             String servingType,
                             Integer tableNumber){
         String query = """
-                INSERT INTO customer_order(employee_id, order_time, payment, total_cost, discount, payment_status, serving,type, table_number, additional_payment)
+                INSERT INTO customer_order(employee_id, order_time, payment, total_cost, discount, payment_status, serving_type, table_number, additional_payment)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                 """;
         jdbcTemplate.update(query, employeeId, orderTime, payment, totalCost, discount, paymentStatus, servingType, tableNumber, additionalPayment);

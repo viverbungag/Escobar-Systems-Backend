@@ -381,11 +381,19 @@ public class OrderService {
                             .getMenuByName(menuName)
                             .orElseThrow(() -> new MenuNotFoundException(menuName));
 
-                    Long foodOrderId = foodOrderJdbcRepository.insertFoodOrder(menu.getMenuId(), menuQuantity);
+                    CustomerFoodOrder currentCustomerFoodOrder = order.getCustomerFoodOrders()
+                            .stream()
+                            .filter(orderCustomerFoodOrder -> orderCustomerFoodOrder.getFoodOrder().getMenu().getMenuName().equals(menuName))
+                            .findAny()
+                            .orElse(null);
 
-                    orderRepository.insertCustomerFoodOrder(foodOrderId, orderId);
-
-//                    CustomerFoodOrder customerFoodOrder = customerFoodOrderRepository.findCustomerFoodOrderByFoodOrderIdAndOrderId();
+                    if (currentCustomerFoodOrder != null){
+                        Integer orderMenuQuantity = currentCustomerFoodOrder.getFoodOrder().getMenuQuantity();
+                        currentCustomerFoodOrder.getFoodOrder().setMenuQuantity(orderMenuQuantity + menuQuantity);
+                    }else{
+                        Long foodOrderId = foodOrderJdbcRepository.insertFoodOrder(menu.getMenuId(), menuQuantity);
+                        orderRepository.insertCustomerFoodOrder(foodOrderId, orderId);
+                    }
 
                     menu.getMenuIngredients()
                             .stream()
