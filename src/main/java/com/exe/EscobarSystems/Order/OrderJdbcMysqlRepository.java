@@ -41,8 +41,8 @@ public class OrderJdbcMysqlRepository implements OrderDao{
                             BigDecimal totalCost,
                             BigDecimal discount,
                             BigDecimal additionalPayment,
-                            PaymentStatus paymentStatus,
-                            ServingType servingType,
+                            String paymentStatus,
+                            String servingType,
                             Integer tableNumber){
         String query = """
                 INSERT INTO customer_order(employee_id, order_time, payment, total_cost, discount, payment_status, serving,type, table_number, additional_payment)

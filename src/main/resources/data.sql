@@ -283,17 +283,17 @@ INSERT INTO food_order(menu_id, menu_quantity) VALUES (3, 3);
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (4, 2);
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (5, 7);
 
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-10', 1100, 'PAYED', 'DINE-IN', 1, 300);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-11', 1100, 'PAYED', 'TAKE-OUT', 1, 300);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-10', 1100, 'UNPAYED', 'DINE-IN', 1, 300);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-11', 1100, 'UNPAYED', 'TAKE-OUT', 1, 300);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-11', 1100, 'PAYED', 'DINE-IN', 1, 300);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (2, '2022-08-10', 1200, 'PAYED', 'TAKE-OUT', 1, 400);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (2, '2022-08-12', 1200, 'PAYED', 'DINE-IN', 1, 400);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (2, '2022-08-10', 1200, 'PAYED', 'DINE-IN', 1, 400);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (3, '2022-09-10', 1300, 'PAYED', 'DINE-IN', 1, 500);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (3, '2022-09-13', 1300, 'PAYED', 'DINE-IN', 1, 500);
-INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (3, '2022-09-10', 1300, 'PAYED', 'DINE-IN', 1, 500);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-10', 1100, 'PAID', 'DINE_IN', 1, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-11', 1100, 'PAID', 'TAKE_OUT', 1, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-10', 1100, 'UNPAID', 'DINE_IN', 1, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-11', 1100, 'UNPAID', 'TAKE_OUT', 1, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (1, '2022-07-11', 1100, 'PAID', 'DINE_IN', 1, 300);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (2, '2022-08-10', 1200, 'PAID', 'TAKE_OUT', 1, 400);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (2, '2022-08-12', 1200, 'PAID', 'DINE_IN', 1, 400);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (2, '2022-08-10', 1200, 'PAID', 'DINE_IN', 1, 400);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (3, '2022-09-10', 1300, 'PAID', 'DINE_IN', 1, 500);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (3, '2022-09-13', 1300, 'PAID', 'DINE_IN', 1, 500);
+INSERT INTO customer_order(employee_id, order_time, payment, payment_status, serving_type, table_number, total_cost) VALUES (3, '2022-09-10', 1300, 'PAID', 'DINE_IN', 1, 500);
 
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (1, 1);
 INSERT INTO customer_food_order(food_order_id, order_id) VALUES (2, 2);

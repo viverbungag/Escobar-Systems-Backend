@@ -1,6 +1,7 @@
 package com.exe.EscobarSystems.Order;
 
 import com.exe.EscobarSystems.CustomerFoodOrder.CustomerFoodOrder;
+import com.exe.EscobarSystems.CustomerFoodOrder.CustomerFoodOrderDao;
 import com.exe.EscobarSystems.CustomerFoodOrder.CustomerFoodOrderDto;
 import com.exe.EscobarSystems.Employee.Employee;
 import com.exe.EscobarSystems.Employee.EmployeeDao;
@@ -64,6 +65,10 @@ public class OrderService {
     @Autowired
     @Qualifier("foodOrder_jdbc_mysql")
     FoodOrderDao foodOrderJdbcRepository;
+
+    @Autowired
+    @Qualifier("customerFoodOrder_mysql")
+    CustomerFoodOrderDao customerFoodOrderRepository;
 
     private FoodOrderDto convertEntityToDto(FoodOrder foodOrder){
         return new FoodOrderDto(
@@ -259,8 +264,8 @@ public class OrderService {
                 new BigDecimal(0),
                 new BigDecimal(0),
                 new BigDecimal(0),
-                paymentStatus,
-                servingType,
+                paymentStatus.toString(),
+                servingType.toString(),
                 tableNumber);
 
 
@@ -379,6 +384,8 @@ public class OrderService {
                     Long foodOrderId = foodOrderJdbcRepository.insertFoodOrder(menu.getMenuId(), menuQuantity);
 
                     orderRepository.insertCustomerFoodOrder(foodOrderId, orderId);
+
+//                    CustomerFoodOrder customerFoodOrder = customerFoodOrderRepository.findCustomerFoodOrderByFoodOrderIdAndOrderId();
 
                     menu.getMenuIngredients()
                             .stream()
