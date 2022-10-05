@@ -169,7 +169,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         String query = """
                 SELECT SUM(total_cost) AS hourly_income, DATE_FORMAT(order_time, '%h:00 %p' ) AS income_hour, COUNT(order_id) AS hourly_orders
                 FROM customer_order
-                WHERE order_time BETWEEN ? AND ?
+                WHERE payment_status="PAID" AND order_time BETWEEN ? AND ?
                 GROUP BY HOUR(order_time);
                 """;
 
