@@ -22,6 +22,9 @@ public interface ExpenseDao {
     List<IncomeTablesBarGraphDto> getIncomeTablesBarGraphByMonth(FromToDate fromToDate);
 
     List<IncomeLineGraphDto> getIncomeLineGraphByMonth(FromToDate fromToDate);
+
     List<IncomeDto> getAllIncomeByMonth();
+
+    List<OrdersServedDto> getOrdersServed(FromToDate fromToDate);
 
 }

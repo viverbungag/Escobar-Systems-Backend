@@ -25,7 +25,11 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         ExpenseTransactionDto expenseTransactionDto = new ExpenseTransactionDto();
         expenseTransactionDto.setTransactionId(rs.getLong("transaction_id"));
         expenseTransactionDto.setTransactionDate(rs.getObject("transaction_date", LocalDateTime.class));
+        expenseTransactionDto.setTransactionSupplyQuantity(rs.getBigDecimal("transaction_supply_quantity"));
+//        expenseTransactionDto.setTransactionType(rs.getString(rs.getString("transaction_type")));
         expenseTransactionDto.setSupplyName(rs.getString("supply_name"));
+        expenseTransactionDto.setSupplierName(rs.getString("supplier_name"));
+        expenseTransactionDto.setEmployeeName(rs.getString("employee_name"));
 
         BigDecimal pricePerUnit = rs.getObject("price_per_unit", BigDecimal.class);
         BigDecimal quantity = rs.getObject("price_per_unit", BigDecimal.class);
@@ -36,8 +40,11 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
 
     public List<ExpenseTransactionDto> getAllTransactionExpensesByMonth(){
         String query = """
-                 SELECT * FROM transaction
-                    INNER JOIN supply ON transaction.supply_id = supply.supply_id;
+                 SELECT *, CONCAT(employee_last_name, ', ', employee_first_name) AS employee_name
+                    FROM transaction
+                    INNER JOIN supply ON transaction.supply_id = supply.supply_id
+                    INNER JOIN supplier ON transaction.supplier_id = supplier.supplier_id
+                    INNER JOIN employee ON transaction.transact_by = employee.employee_id
                 """;
 
         List<ExpenseTransactionDto> transactionExpenses = jdbcTemplate
@@ -200,7 +207,29 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         return income;
     }
 
+    private OrdersServedDto mapOrdersServedDto(final ResultSet rs) throws SQLException {
+        OrdersServedDto ordersServed = new OrdersServedDto();
+        ordersServed.setOrderTime(rs.getString("order_time"));
+        ordersServed.setServingType(rs.getString("serving_type"));
+        ordersServed.setTableNumber(rs.getInt("table_number"));
+        ordersServed.setPaymentStatus(rs.getString("payment_status"));
+        ordersServed.setEmployeeName(rs.getString("employee_name"));
+        return ordersServed;
+    }
 
+    public List<OrdersServedDto> getOrdersServed(FromToDate fromToDate){
+        LocalDateTime fromDate = fromToDate.getFromDate();
+        LocalDateTime toDate = fromToDate.getToDate();
+
+        String query = """
+                SELECT order_time, serving_type, table_number, payment_status, CONCAT(employee.employee_last_name, ', ', employee.employee_first_name) AS employee_name
+                FROM customer_order
+                	INNER JOIN employee ON employee.employee_id = customer_order.employee_id
+                WHERE order_time BETWEEN  ? AND ?
+                """;
+        List<OrdersServedDto> ordersServed = jdbcTemplate.query(query, (rs, rowNum) -> mapOrdersServedDto(rs), fromDate, toDate);
+        return ordersServed;
+    }
 
 
 

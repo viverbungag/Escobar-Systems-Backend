@@ -123,4 +123,9 @@ public class ExpenseService {
 
         return expenseJdbcRepository.getAllIncomeByMonth();
     }
+
+    public List<OrdersServedDto> getOrdersServed(FromToDate fromToDate) {
+
+        return expenseJdbcRepository.getOrdersServed(fromToDate);
+    }
 }

@@ -15,6 +15,10 @@ public class ExpenseTransactionDto {
 
     private Long transactionId;
     private LocalDateTime transactionDate;
+    private BigDecimal transactionSupplyQuantity;
+//    private String transactionType;
     private String supplyName;
+    private String supplierName;
+    private String employeeName;
     private BigDecimal expenseCost;
 }
