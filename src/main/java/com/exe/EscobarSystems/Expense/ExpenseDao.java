@@ -27,4 +27,5 @@ public interface ExpenseDao {
 
     List<OrdersServedDto> getOrdersServed(FromToDate fromToDate);
 
+    List<ServingTypeGraphDto> getServingTypeGraph(FromToDate fromToDate);
 }

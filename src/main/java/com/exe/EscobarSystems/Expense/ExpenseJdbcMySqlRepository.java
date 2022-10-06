@@ -161,6 +161,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
 
         return incomeTablesBarGraph;
     }
+
     private IncomeLineGraphDto mapIncomeLineGraphDateResult(final ResultSet rs) throws SQLException {
         IncomeLineGraphDto incomeLineGraphDto = new IncomeLineGraphDto();
         incomeLineGraphDto.setIncomeHour(rs.getString("income_hour"));
@@ -181,8 +182,29 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
                 """;
 
         List<IncomeLineGraphDto> incomeLineGraphData = jdbcTemplate.query(query, (rs, rowNum) -> mapIncomeLineGraphDateResult(rs), fromDate, toDate);
-
         return incomeLineGraphData;
+    }
+
+    private ServingTypeGraphDto mapServingTypeGraphDto(final ResultSet rs) throws SQLException {
+        ServingTypeGraphDto servingTypeGraphDto = new ServingTypeGraphDto();
+        servingTypeGraphDto.setServingType(rs.getString("serving_type"));
+        servingTypeGraphDto.setServingTypeQuantity(rs.getInt("serving_type_quantity"));
+        return servingTypeGraphDto;
+    }
+
+    public List<ServingTypeGraphDto> getServingTypeGraph(FromToDate fromToDate){
+        LocalDateTime fromDate = fromToDate.getFromDate();
+        LocalDateTime toDate = fromToDate.getToDate();
+
+        String query = """
+                SELECT  serving_type, COUNT(serving_type) as serving_type_quantity
+                FROM customer_order
+                WHERE payment_status="PAID" AND order_time BETWEEN ? AND ?
+                GROUP BY serving_type
+                """;
+
+        List<ServingTypeGraphDto> servingTypeGraph = jdbcTemplate.query(query, (rs, rowNum) -> mapServingTypeGraphDto(rs), fromDate, toDate);
+        return servingTypeGraph;
     }
 
     private IncomeDto mapIncomeResult(final ResultSet rs) throws SQLException {
@@ -211,7 +233,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         OrdersServedDto ordersServed = new OrdersServedDto();
         ordersServed.setOrderTime(rs.getString("order_time"));
         ordersServed.setServingType(rs.getString("serving_type"));
-        ordersServed.setTableNumber(rs.getInt("table_number"));
+        ordersServed.setTableNumber(rs.getString("table_number"));
         ordersServed.setPaymentStatus(rs.getString("payment_status"));
         ordersServed.setEmployeeName(rs.getString("employee_name"));
         return ordersServed;
@@ -222,7 +244,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         LocalDateTime toDate = fromToDate.getToDate();
 
         String query = """
-                SELECT order_time, serving_type, table_number, payment_status, CONCAT(employee.employee_last_name, ', ', employee.employee_first_name) AS employee_name
+                SELECT order_time, serving_type, CONCAT('Table ', table_number) as table_number, payment_status, CONCAT(employee.employee_last_name, ', ', employee.employee_first_name) AS employee_name
                 FROM customer_order
                 	INNER JOIN employee ON employee.employee_id = customer_order.employee_id
                 WHERE order_time BETWEEN  ? AND ?

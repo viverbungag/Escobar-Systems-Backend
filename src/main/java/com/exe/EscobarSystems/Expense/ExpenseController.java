@@ -39,14 +39,21 @@ public class ExpenseController {
         return expenseService.getLineGraphDataByMonth(fromToDate);
     }
 
+    @PostMapping("/serving-type-graph")
+    public List<ServingTypeGraphDto> getServingTypeGraph(@RequestBody FromToDate fromToDate){
+        return expenseService.getServingTypeGraph(fromToDate);
+    }
+
     @PostMapping("/table-graph")
     public List<IncomeTablesBarGraphDto> getIncomeTablesBarGraphByMonth(@RequestBody FromToDate fromToDate){
         return expenseService.getIncomeTablesBarGraphByMonth(fromToDate);
     }
+
     @PostMapping("/orders-served")
     public List<OrdersServedDto> getOrdersServed(@RequestBody FromToDate fromToDate){
         return expenseService.getOrdersServed(fromToDate);
     }
+
     @PostMapping("/add")
     public void addExpense(@RequestBody ExpenseDto expenseDto){
         expenseService.addExpense(expenseDto);

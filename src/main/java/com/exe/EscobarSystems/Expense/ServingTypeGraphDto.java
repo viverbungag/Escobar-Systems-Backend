@@ -7,10 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class OrdersServedDto {
-    String orderTime;
+public class ServingTypeGraphDto {
     String servingType;
-    String tableNumber;
-    String paymentStatus;
-    String employeeName;
+    Integer servingTypeQuantity;
 }
