@@ -450,13 +450,14 @@ public class OrderService {
         BigDecimal discount = orderDto.getDiscount();
         BigDecimal totalCost = orderDto.getTotalCost();
         BigDecimal additionalPayment = orderDto.getAdditionalPayment();
+        PaymentStatus paymentStatus = orderDto.getPaymentStatus();
 
-        if (discount == null ||
-                discount.compareTo(new BigDecimal(0)) < 0 ||
-                discount.compareTo(new BigDecimal(100)) > 0){
-            throw new OrderDiscountOutOfRangeException();
-        }
-
+//        if (discount == null ||
+//                discount.compareTo(new BigDecimal(0)) < 0 ||
+//                discount.compareTo(new BigDecimal(100)) > 0){
+//            throw new OrderDiscountOutOfRangeException();
+//        }
+        order.setPaymentStatus(paymentStatus);
         order.setPayment(payment);
         order.setDiscount(discount);
         order.setTotalCost(totalCost);
