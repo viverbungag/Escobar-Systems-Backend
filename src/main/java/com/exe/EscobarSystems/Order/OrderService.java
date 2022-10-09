@@ -253,6 +253,10 @@ public class OrderService {
         String employeeLastName = employeeNameSplit[0];
         String employeeFirstName = employeeNameSplit[1];
         LocalDateTime orderTime = orderDto.getOrderTime();
+        BigDecimal payment = orderDto.getPayment();
+        BigDecimal totalCost = orderDto.getTotalCost();
+        BigDecimal discount = orderDto.getDiscount();
+        BigDecimal additionalPayment = orderDto.getAdditionalPayment();
         PaymentStatus paymentStatus = orderDto.getPaymentStatus();
         ServingType servingType = orderDto.getServingType();
         Integer tableNumber = orderDto.getTableNumber();
@@ -265,10 +269,10 @@ public class OrderService {
         Long orderId = orderJdbcRepository.insertOrder(
                 employee.getEmployeeId(),
                 orderTime,
-                new BigDecimal(0),
-                new BigDecimal(0),
-                new BigDecimal(0),
-                new BigDecimal(0),
+                payment,
+                totalCost,
+                discount,
+                additionalPayment,
                 paymentStatus.toString(),
                 servingType.toString(),
                 tableNumber);
