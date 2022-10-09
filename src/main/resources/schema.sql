@@ -29,6 +29,7 @@ DROP TABLE IF EXISTS employee_type CASCADE;
 DROP TABLE IF EXISTS expense_category CASCADE;
 DROP TABLE IF EXISTS expense CASCADE;
 DROP TABLE IF EXISTS transaction_dedicated_to_expired CASCADE;
+DROP TABLE IF EXISTS system_configurations CASCADE;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -255,3 +256,12 @@ CREATE TABLE IF NOT EXISTS expense(
     PRIMARY KEY (expense_id),
     FOREIGN KEY (expense_category_id) REFERENCES expense_category(expense_category_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS system_configurations(
+    system_configurations_id BIGINT NOT NULL AUTO_INCREMENT,
+    void_password VARCHAR(255),
+    number_of_tables INTEGER,
+    PRIMARY KEY (system_configurations_id)
+);
+
+

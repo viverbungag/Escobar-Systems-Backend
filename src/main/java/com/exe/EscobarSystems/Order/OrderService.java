@@ -21,6 +21,7 @@ import com.exe.EscobarSystems.Pagination.PaginationDto;
 import com.exe.EscobarSystems.Supply.Exceptions.SupplyNotFoundException;
 import com.exe.EscobarSystems.Supply.Supply;
 import com.exe.EscobarSystems.Supply.SupplyDao;
+import com.exe.EscobarSystems.SystemConfigurations.SystemConfigurationsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -69,6 +70,10 @@ public class OrderService {
     @Autowired
     @Qualifier("customerFoodOrder_mysql")
     CustomerFoodOrderDao customerFoodOrderRepository;
+
+    @Autowired
+    @Qualifier("systemConfigurations_mysql")
+    SystemConfigurationsDao systemConfigurationsRepository;
 
     private FoodOrderDto convertEntityToDto(FoodOrder foodOrder){
         return new FoodOrderDto(
@@ -464,11 +469,29 @@ public class OrderService {
 
     }
 
-    public List<Integer> getUnavailableTableNumbers() {
+    private List<Integer> getUnavailableTableNumbers() {
+
         return orderRepository
                 .getAllUnpaidOrders()
                 .stream()
                 .map((order) -> order.getTableNumber())
                 .collect(Collectors.toList());
+    }
+
+    public List<Integer> getAvailableTableNumbers() {
+
+        List<Integer> unavailableTableNumbers = getUnavailableTableNumbers();
+
+        List<Integer> availableTableNumbers = new ArrayList<>();
+
+        Integer numberOfTables = systemConfigurationsRepository.getSystemConfigurations().getNumberOfTables();
+
+        for (int idx = 1; idx < numberOfTables+1; idx++){
+            if(!unavailableTableNumbers.contains(idx)){
+                availableTableNumbers.add(idx);
+            }
+        }
+
+        return availableTableNumbers;
     }
 }

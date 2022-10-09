@@ -322,3 +322,5 @@ INSERT INTO expense(expense_date, expense_cost, expense_description, expense_cat
 INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-09-10', 1600, '', 1);
 INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-09-10', 1700, '', 2);
 INSERT INTO expense(expense_date, expense_cost, expense_description, expense_category_id) VALUES ('2022-09-10', 1300, '', 3);
+
+INSERT INTO system_configurations(system_configurations_id, void_password, number_of_tables) VALUES (1, '123', 50);

@@ -58,9 +58,9 @@ public class OrderController {
         orderService.payOrder(orderDto, orderId);
     }
 
-    @GetMapping("/unavailable-table-numbers")
-    public List<Integer> getUnavailableTableNumbers(){
-        return orderService.getUnavailableTableNumbers();
+    @GetMapping("/available-table-numbers")
+    public List<Integer> getAvailableTableNumbers(){
+        return orderService.getAvailableTableNumbers();
     };
 
     @PostMapping("/add/existing/{orderId}")
