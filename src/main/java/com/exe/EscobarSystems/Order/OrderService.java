@@ -365,14 +365,11 @@ public class OrderService {
 
     public void addToExistingOrder(OrderDto orderDto, Long orderId) {
         List<CustomerFoodOrderDto> customerFoodOrders = orderDto.getCustomerFoodOrders();
-        BigDecimal customerPayment = orderDto.getPayment();
         BigDecimal totalCost = orderDto.getTotalCost();
 
         Order order = orderRepository
                 .getOrderByOrderId(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
-
-        order.setPayment(customerPayment.add(order.getPayment()));
 
         order.setTotalCost(totalCost.add(order.getTotalCost()));
 
