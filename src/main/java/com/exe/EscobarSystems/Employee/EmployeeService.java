@@ -2,11 +2,15 @@ package com.exe.EscobarSystems.Employee;
 
 import com.exe.EscobarSystems.Employee.Exceptions.EmployeeIsExistingException;
 import com.exe.EscobarSystems.Employee.Exceptions.EmployeeNotFoundException;
+import com.exe.EscobarSystems.Employee.Exceptions.EmployeePositionIsNullException;
+import com.exe.EscobarSystems.Employee.Exceptions.EmployeeTypeIsNullException;
 import com.exe.EscobarSystems.EmployeePosition.EmployeePosition;
 import com.exe.EscobarSystems.EmployeePosition.EmployeePositionDao;
+import com.exe.EscobarSystems.EmployeePosition.Exceptions.EmployeePositionNameIsNullException;
 import com.exe.EscobarSystems.EmployeePosition.Exceptions.EmployeePositionNotFoundException;
 import com.exe.EscobarSystems.EmployeeType.EmployeeType;
 import com.exe.EscobarSystems.EmployeeType.EmployeeTypeDao;
+import com.exe.EscobarSystems.EmployeeType.Exceptions.EmployeeTypeNameIsNullException;
 import com.exe.EscobarSystems.EmployeeType.Exceptions.EmployeeTypeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -94,12 +98,23 @@ public class EmployeeService {
         String address = employeeDto.getEmployeeAddress();
         String contactNumber = employeeDto.getEmployeeContactNumber();
         LocalDateTime dateEmployed = employeeDto.getDateEmployed();
+        String employeePositionName = employeeDto.getEmployeePositionName();
+        String employeeTypeName = employeeDto.getEmployeeTypeName();
+
+        if (employeePositionName == null || employeePositionName.length() <= 0){
+            throw new EmployeePositionIsNullException();
+        }
+
+        if (employeeTypeName == null || employeeTypeName.length() <= 0){
+            throw new EmployeeTypeIsNullException();
+        }
+
         EmployeePosition employeePosition = employeePositionRepository
                 .getEmployeePositionByName(employeeDto.getEmployeePositionName())
-                .orElseThrow(() -> new EmployeePositionNotFoundException(employeeDto.getEmployeePositionName()));
+                .orElseThrow(() -> new EmployeePositionNotFoundException(employeePositionName));
 
         EmployeeType employeeType = employeeTypeRepository.getEmployeeTypeByName(employeeDto.getEmployeeTypeName())
-                        .orElseThrow(() -> new EmployeeTypeNotFoundException(employeeDto.getEmployeeTypeName()));
+                        .orElseThrow(() -> new EmployeeTypeNotFoundException(employeeTypeName));
 
         String superiorName = employeeDto.getSuperiorEmployeeName();
         Employee superior = null;
@@ -144,12 +159,24 @@ public class EmployeeService {
         String address = employeeDto.getEmployeeAddress();
         String contactNumber = employeeDto.getEmployeeContactNumber();
         LocalDateTime dateEmployed = employeeDto.getDateEmployed();
+        String employeePositionName = employeeDto.getEmployeePositionName();
+        String employeeTypeName = employeeDto.getEmployeeTypeName();
+
+
+        if (employeePositionName == null || employeePositionName.length() <= 0){
+            throw new EmployeePositionIsNullException();
+        }
+
+        if (employeeTypeName == null || employeeTypeName.length() <= 0){
+            throw new EmployeeTypeIsNullException();
+        }
+
         EmployeePosition employeePosition = employeePositionRepository
                 .getEmployeePositionByName(employeeDto.getEmployeePositionName())
-                .orElseThrow(() -> new EmployeePositionNotFoundException(employeeDto.getEmployeePositionName()));
+                .orElseThrow(() -> new EmployeePositionNotFoundException(employeePositionName));
 
         EmployeeType employeeType = employeeTypeRepository.getEmployeeTypeByName(employeeDto.getEmployeeTypeName())
-                .orElseThrow(() -> new EmployeeTypeNotFoundException(employeeDto.getEmployeeTypeName()));
+                .orElseThrow(() -> new EmployeeTypeNotFoundException(employeeTypeName));
 
         String superiorName = employeeDto.getSuperiorEmployeeName();
         Employee superior = null;

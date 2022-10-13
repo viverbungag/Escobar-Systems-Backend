@@ -229,6 +229,7 @@ INSERT INTO employee_attendance(attendance_time, attendance_type) VALUES ('2022-
 INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Jay", "Tan", "Davao", "0923456789", '2020-03-22', 2, 3, NULL, true);
 INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Viver", "Bungag", "Manila", "0912345678", '2020-01-10', 1, 2, 1, true);
 INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Julienne", "Panes", "Cebu", "0934567891", '2019-12-25', 3, 1, 1, true);
+INSERT INTO employee(employee_first_name, employee_last_name, employee_address, employee_contact_number, date_employed, employee_position_id, employee_type_id, superior_employee_id, is_active) VALUES ("Aaron", "Go", "USA", "0934567899", '2021-03-10', 3, 1, 1, true);
 
 INSERT INTO employee_attendance_join(employee_id, employee_attendance_id) VALUES (1, 1);
 INSERT INTO employee_attendance_join(employee_id, employee_attendance_id) VALUES (1, 2);
@@ -270,6 +271,7 @@ INSERT INTO transaction_dedicated_to_expired(transact_by, transaction_date, supp
 INSERT INTO account(account_username, account_password, employee_id, access_inventory_management_system, access_employee_management_system, access_income_and_expense_system, access_ordering_system) VALUES ('viver', 'password', 2, true, true, true, true);
 INSERT INTO account(account_username, account_password, employee_id, access_inventory_management_system, access_employee_management_system, access_income_and_expense_system, access_ordering_system) VALUES ('jay', 'password', 1, true, true, true, true);
 INSERT INTO account(account_username, account_password, employee_id, access_inventory_management_system, access_employee_management_system, access_income_and_expense_system, access_ordering_system) VALUES ('julienne', 'password', 3, true, true, true, true);
+INSERT INTO account(account_username, account_password, employee_id, access_inventory_management_system, access_employee_management_system, access_income_and_expense_system, access_ordering_system) VALUES ('aaron', 'password', 4, true, true, true, true);
 
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (2, 1);
 INSERT INTO food_order(menu_id, menu_quantity) VALUES (3, 2);

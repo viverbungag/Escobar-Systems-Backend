@@ -190,7 +190,7 @@ public class TransactionService {
             throw new QuantityIsLessThanOneException();
         }
 
-        if (pricePerUnit < 1){
+        if (pricePerUnit < 0){
             throw new PricePerUnitIsLessThanZeroException();
         }
 
