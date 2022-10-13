@@ -37,6 +37,11 @@ public class OrderController {
         return orderService.getAllOrdersToday();
     }
 
+    @GetMapping("/unpaid")
+    public List<OrderDto> getAllUnpaidOrders(){
+        return orderService.getAllUnpaidOrders();
+    }
+
     @PostMapping("/menu-on-category")
     public List<MenuDto> getMenuBasedOnCategory(@RequestBody MenuOnCategoryDto menuOnCategoryDto){
         System.out.println(menuOnCategoryDto);

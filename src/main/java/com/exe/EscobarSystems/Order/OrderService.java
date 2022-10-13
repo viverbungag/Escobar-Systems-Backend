@@ -496,4 +496,12 @@ public class OrderService {
 
         return availableTableNumbers;
     }
+
+    public List<OrderDto> getAllUnpaidOrders() {
+        return orderRepository
+                .getAllUnpaidOrders()
+                .stream()
+                .map((Order order) -> convertEntityToDto(order))
+                .collect(Collectors.toList());
+    }
 }
