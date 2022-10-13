@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @ToString
 public class OrdersServedDto {
+    Integer orderID;
     String orderTime;
     String servingType;
     String tableNumber;

@@ -231,6 +231,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
 
     private OrdersServedDto mapOrdersServedDto(final ResultSet rs) throws SQLException {
         OrdersServedDto ordersServed = new OrdersServedDto();
+        ordersServed.setOrderID(rs.getInt("order_id"));
         ordersServed.setOrderTime(rs.getString("order_time"));
         ordersServed.setServingType(rs.getString("serving_type"));
         ordersServed.setTableNumber(rs.getString("table_number"));
@@ -244,7 +245,7 @@ public class ExpenseJdbcMySqlRepository implements ExpenseDao{
         LocalDateTime toDate = fromToDate.getToDate();
 
         String query = """
-                SELECT order_time, serving_type, CONCAT('Table ', table_number) as table_number, payment_status, CONCAT(employee.employee_last_name, ', ', employee.employee_first_name) AS employee_name
+                SELECT order_id, order_time, serving_type, CONCAT('Table ', table_number) as table_number, payment_status, CONCAT(employee.employee_last_name, ', ', employee.employee_first_name) AS employee_name
                 FROM customer_order
                 	INNER JOIN employee ON employee.employee_id = customer_order.employee_id
                 WHERE order_time BETWEEN  ? AND ?
